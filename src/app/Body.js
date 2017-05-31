@@ -80,7 +80,7 @@ class Body extends Component {
                         <CourseContainer lists={this.state.courses} />
                     </div>
                     <div className="col-sm-9 text-left"> 
-                        <h1>Drop Items here...</h1>
+                        <h1>Drop courses here...</h1>
                         <Backpack
                             onDrop={this.handleDrop}
                             droppedCourseNames={this.state.droppedCourseNames}
