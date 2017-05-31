@@ -24,7 +24,8 @@ class Body extends Component {
                 { id: 4, name: 'Maths', type: ItemTypes.COURSE },
                 { id: 5, name: 'Geography', type: ItemTypes.COURSE },
                 { id: 6, name: 'Hindi', type: ItemTypes.COURSE },
-                { id: 7, name: 'English', type: ItemTypes.COURSE }
+                { id: 7, name: 'English', type: ItemTypes.COURSE },
+                { id: 7, name: 'Civics', type: ItemTypes.COURSE }
             ],
             droppedCourseNames: [],
         };
