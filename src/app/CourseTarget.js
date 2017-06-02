@@ -4,12 +4,12 @@ import { DropTarget } from 'react-dnd';
 import {ItemTypes} from './Constant';
 
 const courseTarget = {
-  drop(props, monitor) {
+  drop(props, monitor, component) {
     props.onDrop(monitor.getItem());
-  },
+  }
 };
 
-class Backpack extends Component {
+class CourseTarget extends Component {
     render() {
         const { canDrop, isOver, connectDropTarget, droppedCourseNames } = this.props;
         const isActive = canDrop && isOver;
@@ -42,7 +42,7 @@ class Backpack extends Component {
     }
 }
 
-Backpack.propTypes = {
+CourseTarget.propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
     canDrop: PropTypes.bool.isRequired,
@@ -54,4 +54,4 @@ export default DropTarget(ItemTypes.COURSE, courseTarget, (connect, monitor) => 
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop(),
-}))(Backpack);
+}))(CourseTarget);

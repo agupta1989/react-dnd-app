@@ -4,7 +4,7 @@ export default class Footer extends Component {
     render() {
         return (
             <footer className="container-fluid text-center">
-            <p>Copyright</p>
+                <p>Copyright</p>
             </footer>
         );
     }

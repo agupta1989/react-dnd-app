@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import update from 'react/lib/update';
 import { DragDropContext } from 'react-dnd';
 
-import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { default as TouchBackend } from 'react-dnd-touch-backend';
-import Backpack from './Backpack';
+import CourseTarget from './CourseTarget';
 import CourseContainer from './CourseContainer';
 import {ItemTypes} from './Constant';
 
@@ -25,7 +25,7 @@ class Body extends Component {
                 { id: 5, name: 'Geography', type: ItemTypes.COURSE },
                 { id: 6, name: 'Hindi', type: ItemTypes.COURSE },
                 { id: 7, name: 'English', type: ItemTypes.COURSE },
-                { id: 7, name: 'Civics', type: ItemTypes.COURSE }
+                { id: 8, name: 'Civics', type: ItemTypes.COURSE }
             ],
             droppedCourseNames: [],
         };
@@ -39,38 +39,6 @@ class Body extends Component {
             } : {},
         }));
     }
-    getLists() {
-        return [
-            {
-                id: 1,
-                type: "course"
-            },
-            {
-                id: 2,
-                type: "course"
-            },
-            {
-                id: 3,
-                type: "course"
-            },
-            {
-                id: 4,
-                type: "course"
-            },
-            {
-                id: 5,
-                type: "course"
-            },
-            {
-                id: 6,
-                type: "course"
-            },
-            {
-                id: 7,
-                type: "course"
-            }
-        ];
-    }
 
     render() {
         return (
@@ -81,7 +49,7 @@ class Body extends Component {
                     </div>
                     <div className="col-sm-9 text-left"> 
                         <h1>Drop courses here...</h1>
-                        <Backpack
+                        <CourseTarget
                             onDrop={this.handleDrop}
                             droppedCourseNames={this.state.droppedCourseNames}
                         />
@@ -95,7 +63,7 @@ class Body extends Component {
 let _Container = null;
 if ('ontouchstart' in window || navigator.maxTouchPoints) {
   window.console.log("its touch based");
-  _Container = DragDropContext(TouchBackend)(Body);
+  _Container = DragDropContext(TouchBackend({ enableMouseEvents: true }))(Body);
 } else {
   window.console.log("its mouse based");
   _Container = DragDropContext(HTML5Backend)(Body);
