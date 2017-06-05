@@ -1,0 +1,29 @@
+
+.col {
+    float: left;
+    padding: 0px 2px 5px 2px;
+    margin: 2px 2px 0px 0px;
+    width: 24%;
+}
+
+.col .block {
+	display: block;
+    margin: 2px 0px 0px 0px;
+    width: 90%;
+}
+
+.drags {
+    border: 1px solid #808080;
+    border-radius: 7px;
+    cursor: move;
+}
+
+.drop {
+    border: 1px dashed #808080;
+    height: 51px;
+    border-radius: 8px;
+}
+
+h4 {
+    font-size: 15px;
+}
