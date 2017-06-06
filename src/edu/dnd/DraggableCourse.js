@@ -5,34 +5,42 @@ import { findDOMNode } from "react-dom";
 import Course from '../Course';
 
 const getStyles = (props) => {
-  const { left, top, isDragging } = props;
-  const transform = `translate3d(${left}px, ${top}px, 0)`;
-  
-  return {
-    transform,
-    opacity: isDragging ? 0 : 1,
-  };
+    const { left, top, isDragging, isDisabled } = props;
+    const transform = `translate3d(${left}px, ${top}px, 0)`;
+    const opacity = isDisabled ? 0.5 : (isDragging ? 0 : 1);
+
+    return {
+      transform,
+      opacity,
+    };
 }
 
 const courseSource = {
   beginDrag(props) {
     return {
        course: props.course,
-       index: props.index
+       index: props.index,
+       termId: props.termId
     };
+  },
+  canDrag(props, monitor) {
+    if (props.isDisabled) {
+      return false;
+    } else {
+      return true;
+    }
   }
 };
 
 const termTarget = {
   hover(props, monitor, component) {
-    const dragIndex = monitor.getItem().index;
+    const courseItem = monitor.getItem();
+    const dragIndex = courseItem.index;
     const hoverIndex = props.index;
+    const termId = props.termId;
 
     // Don't replace items with themselves
-    // console.log("item",  monitor.getItem());
-    // console.log("dragIndex", dragIndex)
-    // console.log("hover index", hoverIndex);
-    if (dragIndex === hoverIndex) {
+    if (termId === courseItem.course.termId && dragIndex === hoverIndex) {
       return;
     }
 
@@ -63,7 +71,7 @@ const termTarget = {
     }
 
     // Time to actually perform the action
-    props.moveCard(dragIndex, hoverIndex);
+    props.moveCard({dragIndex, hoverIndex, termId, course: courseItem.course});
 
     // Note: we're mutating the monitor item here!
     // Generally it's better to avoid mutations,
@@ -71,16 +79,19 @@ const termTarget = {
     // to avoid expensive index searches.
     monitor.getItem().index = hoverIndex;
   },
+  drop(props, monitor, component) {
+      console.log("props", props);
+  }
 };
 
 
 class DraggableCourse extends Component {
     render() {
-        const { connectDragSource, connectDropTarget, course, index } = this.props;
+        const { connectDragSource, connectDropTarget, course, index, isDisabled } = this.props;
         return (
             connectDragSource(connectDropTarget(
                 <div style={getStyles(this.props)}>
-                    <Course course={course} index={index}/>
+                    <Course isDisabled={isDisabled} course={course} index={index}/>
                 </div>
             ))
         );

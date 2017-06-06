@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Header from "../app/Header";
-import Term from "./plans/Term";
+import update from "react/lib/update";
+import Term from "./Term";
 import { ItemTypes } from "./Constant";
 
 import '../app/App.css';
@@ -9,7 +10,7 @@ import "./edu.css";
 class Edu extends Component {
     constructor(props) {
         super(props);
-        this.updateTerm = this.updateTerm.bind(this);
+        this.onHover = this.onHover.bind(this);
         this.state = {
             terms: [
                 {
@@ -19,17 +20,23 @@ class Edu extends Component {
                         {
                             id: 1,
                             name: "Physics",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 1,
+                            isDisabled: true
                         },
                         {
                             id: 2,
                             name: "Chemistry",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 1,
+                            isDisabled: false
                         },
                         {
                             id: 3,
                             name: "Biology",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 1,
+                            isDisabled: false
                         }
                     ]
                 },
@@ -38,19 +45,22 @@ class Edu extends Component {
                     name: "Winter",
                     courses: [
                         {
-                            id: 1,
+                            id: 4,
                             name: "Civics",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 2
                         },
                         {
-                            id: 2,
+                            id: 5,
                             name: "History",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 2
                         },
                         {
-                            id: 3,
+                            id: 6,
                             name: "Geography",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 2
                         }
                     ]
                 },
@@ -59,19 +69,22 @@ class Edu extends Component {
                     name: "Spring",
                     courses: [
                         {
-                            id: 1,
+                            id: 7,
                             name: "Algebra",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 3
                         }, 
                         {
-                            id: 2,
+                            id: 8,
                             name: "Geometry",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 3
                         },
                         {
-                            id: 3,
+                            id: 9,
                             name: "Statistics",
-                            type: ItemTypes.COURSE
+                            type: ItemTypes.COURSE,
+                            termId: 3
                         }
                     ]
                 },
@@ -86,17 +99,83 @@ class Edu extends Component {
         };
     }
 
-    updateTerm(term) {
-        console.log("updated term", term);
-        const t = this.state.terms.map(t => {
-            if (t.id === term.id) {
-                return term;
-            } else {
-                return t;
-            }
-        });
+    onHover({dragIndex, hoverIndex, termId, course}) {
+        // console.log("dragIndex", dragIndex);
+        // console.log("hoverIndex", hoverIndex);
+        // console.log("which course", course);
 
-        this.setState(t);
+        const tIndex = this.state.terms.findIndex(t => t.id === termId);
+
+        let term = this.state.terms[tIndex];
+
+        // check if drag ops is within the same term
+        if (course.termId === term.id) {
+            const dragCard = term.courses[dragIndex];
+
+            term = update(term, {
+                courses: {
+                    $splice: [
+                        [dragIndex, 1],
+                        [hoverIndex, 0, dragCard],
+                    ]
+                }
+            });
+            this.setState(update(this.state, {
+                terms: {
+                    $splice: [
+                        [tIndex, 1],
+                        [tIndex, 0, term]
+                    ]
+                }
+            }));
+        } else {
+            // change the course term id with new term.
+            course.termId = term.id;
+
+            // update the term
+            term = update(term, {
+                courses: {
+                    $splice: [
+                        [hoverIndex, 0, course],
+                    ]
+                }
+            });
+
+            // update the state
+            this.setState(update(this.state, {
+                terms: {
+                    $splice: [
+                        [tIndex, 1],
+                        [tIndex, 0, term]
+                    ]
+                }
+            }));
+        }
+    }
+
+    onDrop(dropInfo) {
+        console.log("DropInfo ", dropInfo);
+        // Since terms do not match, hence keep a track of parentTerm in which course originally belongs to.
+        // const parentTermIndex = this.state.terms.findIndex(t => t.id === course.termId);
+        // let courseParentTerm = this.state.terms[parentTermIndex];
+
+        // remove the course from parent term.
+        // courseParentTerm = courseParentTerm.courses.filter(c => {
+        //     return c.id !== course.id;
+        // });
+
+        // console.log("parentTermIndex", parentTermIndex);
+        // console.log("courseParentTerm", courseParentTerm);
+        // console.log("tIndex", tIndex);
+
+        // this.setState(update(this.state, {
+        //     terms: {
+        //         $splice: [
+        //             [parentTermIndex, 1],
+        //             [parentTermIndex, 0, courseParentTerm]
+        //         ]
+        //     }
+        // }))
     }
 
     render() {
@@ -105,8 +184,8 @@ class Edu extends Component {
                 <Header />
                 <div className={"container"}>
                     {
-                        this.state.terms.map((term) => (
-                            <Term key={term.id} index={term.id} term={term} updateTerm={this.updateTerm} />
+                        this.state.terms.map((term, index) => (
+                            <Term key={term.id} index={index} term={term} onHover={this.onHover} onDrop={this.onDrop} />
                         ))
                     }
                 </div>

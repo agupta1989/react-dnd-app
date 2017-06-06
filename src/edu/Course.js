@@ -3,9 +3,9 @@ import React, {Component} from "react";
 export default class Course extends Component {
 
     render() {
-        const { course } = this.props;
+        const { course, isDisabled } = this.props;
         return (
-            <div key={course.id} className="block drags">
+            <div key={course.id} className={isDisabled ? "block" : "block drags"}>
                 <h4>{course.name}</h4>
                 <span>4 credits</span>
             </div>
