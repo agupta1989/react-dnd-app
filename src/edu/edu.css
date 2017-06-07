@@ -14,6 +14,14 @@
     border-radius: 7px;
 }
 
+.col .empty {
+    display: block;
+    margin: 2px 0px 0px 0px;
+    width: 90%;
+    border: 1px dashed #808080;
+    border-radius: 7px;
+}
+
 .drags {
     cursor: move;
 }

@@ -1,16 +1,14 @@
 import React, {Component} from "react";
 import DraggableCourse from "./dnd/DraggableCourse";
 import { DragDropContext } from "react-dnd";
-import HTML5Backend from 'react-dnd-html5-backend';
+import HTML5Backend from "react-dnd-html5-backend";
+import BlankCourse from "./dnd/BlankCourse";
 
 class Term extends Component {
     constructor(props) {
         super(props);
         this.moveCard = this.moveCard.bind(this);
         this.updateCard = this.updateCard.bind(this);
-    }
-    getEmptyBlock() {
-        return <div className="block drop"></div>;
     }
     moveCard(dragInfo) {
         this.props.onHover(dragInfo);
@@ -19,7 +17,7 @@ class Term extends Component {
         this.props.onDrop(dropInfo);
     }
     render() {
-        const { term, index } = this.props;
+        const { term } = this.props;
 
         return (
             <div className="col">
@@ -28,7 +26,7 @@ class Term extends Component {
                 </div>
                 {
                     term.courses.length < 1
-                        ? this.getEmptyBlock()
+                        ? <BlankCourse index={0} termId={term.id} moveCard={this.moveCard} updateCard={this.updateCard} />
                         : term.courses.map((course, idx) => (
                             <DraggableCourse isDisabled={course.isDisabled} termId={term.id} key={course.id} index={idx} course={course} moveCard={this.moveCard} updateCard={this.updateCard} />
                         ))

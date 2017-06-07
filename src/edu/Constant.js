@@ -1,8 +1,3 @@
 export const ItemTypes = {
-  COURSE: 'course',
-  PRACTICAL: 'practical'
+    COURSE: "course"
 };
-
-export const TERMS = {
-  
-}

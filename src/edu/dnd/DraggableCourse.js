@@ -7,7 +7,7 @@ import Course from '../Course';
 const getStyles = (props) => {
     const { left, top, isDragging, isDisabled } = props;
     const transform = `translate3d(${left}px, ${top}px, 0)`;
-    const opacity = isDisabled ? 0.5 : (isDragging ? 0 : 1);
+    const opacity = isDisabled ? 0.5 : (isDragging ? 0.5 : 1);
 
     return {
       transform,
@@ -15,7 +15,7 @@ const getStyles = (props) => {
     };
 }
 
-const courseSource = {
+const dragSource = {
   beginDrag(props) {
     return {
        course: props.course,
@@ -32,7 +32,7 @@ const courseSource = {
   }
 };
 
-const termTarget = {
+const dropTarget = {
   hover(props, monitor, component) {
     const courseItem = monitor.getItem();
     const dragIndex = courseItem.index;
@@ -98,9 +98,9 @@ class DraggableCourse extends Component {
     }
 }
 
-export default DropTarget(ItemTypes.COURSE, termTarget, connect => ({
+export default DropTarget(ItemTypes.COURSE, dropTarget, connect => ({
   connectDropTarget: connect.dropTarget(),
-}))(DragSource(ItemTypes.COURSE, courseSource, (connect, monitor) => {
+}))(DragSource(ItemTypes.COURSE, dragSource, (connect, monitor) => {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()

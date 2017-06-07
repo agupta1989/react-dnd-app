@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import Header from "../app/Header";
 import update from "react/lib/update";
 import Term from "./Term";
 import { ItemTypes } from "./Constant";
 
-import '../app/App.css';
+import "../app/App.css";
 import "./edu.css";
 
 class Edu extends Component {
@@ -73,7 +73,7 @@ class Edu extends Component {
                             name: "Algebra",
                             type: ItemTypes.COURSE,
                             termId: 3
-                        }, 
+                        },
                         {
                             id: 8,
                             name: "Geometry",
@@ -100,82 +100,75 @@ class Edu extends Component {
     }
 
     onHover({dragIndex, hoverIndex, termId, course}) {
-        // console.log("dragIndex", dragIndex);
-        // console.log("hoverIndex", hoverIndex);
-        // console.log("which course", course);
+        const currentTermIndex = this.state.terms.findIndex(t => t.id === termId);
+        const prevTermIndex = this.state.terms.findIndex(t => t.id === course.termId);
 
-        const tIndex = this.state.terms.findIndex(t => t.id === termId);
-
-        let term = this.state.terms[tIndex];
+        const currentTerm = this.state.terms[currentTermIndex];
 
         // check if drag ops is within the same term
-        if (course.termId === term.id) {
-            const dragCard = term.courses[dragIndex];
+        if (currentTermIndex === prevTermIndex) {
+            const draggedCourse = currentTerm.courses[dragIndex];
 
-            term = update(term, {
-                courses: {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, dragCard],
-                    ]
-                }
-            });
             this.setState(update(this.state, {
                 terms: {
-                    $splice: [
-                        [tIndex, 1],
-                        [tIndex, 0, term]
-                    ]
+                    [currentTermIndex]: {
+                        courses: {
+                            $splice: [
+                                [dragIndex, 1],
+                                [hoverIndex, 0, draggedCourse],
+                            ]
+                        }
+                    }
                 }
             }));
         } else {
+            const prevTerm = this.state.terms[prevTermIndex];
+            const draggedCourse = prevTerm.courses[dragIndex];
             // change the course term id with new term.
-            course.termId = term.id;
+            draggedCourse.termId = currentTerm.id;
 
-            // update the term
-            term = update(term, {
-                courses: {
-                    $splice: [
-                        [hoverIndex, 0, course],
-                    ]
-                }
-            });
-
-            // update the state
-            this.setState(update(this.state, {
-                terms: {
-                    $splice: [
-                        [tIndex, 1],
-                        [tIndex, 0, term]
-                    ]
-                }
-            }));
+            if (currentTerm.courses.length === 0) {
+                this.setState(update(this.state, {
+                    terms: {
+                        [currentTermIndex]: {
+                            courses: {
+                                $push: [ draggedCourse ]
+                            }
+                        },
+                        [prevTermIndex]: {
+                            courses: {
+                                $splice: [
+                                    [dragIndex, 1]
+                                ]
+                            }
+                        }
+                    }
+                }));
+            } else {
+                this.setState(update(this.state, {
+                    terms: {
+                        [currentTermIndex]: {
+                            courses: {
+                                $splice: [
+                                    [hoverIndex, 0, draggedCourse],
+                                ]
+                            }
+                        },
+                        [prevTermIndex]: {
+                            courses: {
+                                $splice: [
+                                    [dragIndex, 1]
+                                ]
+                            }
+                        }
+                    }
+                }));
+            }
         }
     }
 
     onDrop(dropInfo) {
         console.log("DropInfo ", dropInfo);
-        // Since terms do not match, hence keep a track of parentTerm in which course originally belongs to.
-        // const parentTermIndex = this.state.terms.findIndex(t => t.id === course.termId);
-        // let courseParentTerm = this.state.terms[parentTermIndex];
-
-        // remove the course from parent term.
-        // courseParentTerm = courseParentTerm.courses.filter(c => {
-        //     return c.id !== course.id;
-        // });
-
-        // console.log("parentTermIndex", parentTermIndex);
-        // console.log("courseParentTerm", courseParentTerm);
-        // console.log("tIndex", tIndex);
-
-        // this.setState(update(this.state, {
-        //     terms: {
-        //         $splice: [
-        //             [parentTermIndex, 1],
-        //             [parentTermIndex, 0, courseParentTerm]
-        //         ]
-        //     }
-        // }))
     }
 
     render() {
