@@ -4,6 +4,7 @@ import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import BlankCourse from "./dnd/BlankCourse";
 
+// Some random comments for agpt/some_random_hotfix
 class Term extends Component {
     constructor(props) {
         super(props);

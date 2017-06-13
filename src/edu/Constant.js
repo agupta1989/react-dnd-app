@@ -1,3 +1,3 @@
 export const ItemTypes = {
-    COURSE: "course"
+    COURSE: "courses"
 };
