@@ -6,30 +6,28 @@ import Course from '../Course';
 
 const getStyles = (props) => {
     const { left, top, isDragging, isDisabled } = props;
-    const transform = `translate3d(${left}px, ${top}px, 0)`;
-    const opacity = isDisabled ? 0.5 : (isDragging ? 0.5 : 1);
+    const opacity = (isDisabled || isDragging) ? 0.5 : 1;
 
     return {
-      transform,
       opacity,
     };
 }
 
 const dragSource = {
-  beginDrag(props) {
-    return {
-       course: props.course,
-       index: props.index,
-       termId: props.termId
-    };
-  },
-  canDrag(props, monitor) {
-    if (props.isDisabled) {
-      return false;
-    } else {
-      return true;
+    beginDrag(props) {
+      return {
+        course: props.course,
+        index: props.index,
+        termId: props.termId
+      };
+    },
+    canDrag(props, monitor) {
+      if (props.isDisabled) {
+        return false;
+      } else {
+        return true;
+      }
     }
-  }
 };
 
 const dropTarget = {
