@@ -13,7 +13,7 @@ const dropTarget = {
         console.log("~~~~~~~ #### ~~~~~~~");
     },
     drop(props, monitor, component) {
-        console.log("~~~~~~~ onDrop ~~~~~~~");
+        console.log("#### onDrop ~~~~~~~");
         console.log("props", props);
         console.log("monitor", monitor);
         console.log("component", component);
