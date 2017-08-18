@@ -6,7 +6,7 @@ import BlankCourse from "./dnd/BlankCourse";
 
 const dropTarget = {
     hover(props, monitor, component) {
-        console.log("~~~~~~~ onHover ~~~~~~~");
+        console.log("~~~~~~~ onHover @@@");
         console.log("props", props);
         console.log("monitor", monitor);
         console.log("component", component);
