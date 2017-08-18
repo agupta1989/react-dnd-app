@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import Header from "../app/Header";
 import update from "react/lib/update";
-import Term from "./Term";
 import { ItemTypes } from "./Constant";
+import Planner from "./Planner";
 
 import "../app/App.css";
 import "./edu.css";
@@ -175,13 +175,7 @@ class Edu extends Component {
         return (
             <div className={"App"}>
                 <Header />
-                <div className={"container"}>
-                    {
-                        this.state.terms.map((term, index) => (
-                            <Term key={term.id} index={index} term={term} onHover={this.onHover} onDrop={this.onDrop} />
-                        ))
-                    }
-                </div>
+                <Planner terms={this.state.terms} onHover={this.onHover} onDrop={this.onDrop} />
             </div>
         )
     }
