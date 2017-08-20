@@ -7,6 +7,10 @@ import Planner from "./Planner";
 import "../app/App.css";
 import "./edu.css";
 
+// Just a comment to make commit 1 WIP
+// Another comment for WIP 2
+// Final comment for WIP 3
+
 class Edu extends Component {
     constructor(props) {
         super(props);
