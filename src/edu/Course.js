@@ -7,7 +7,7 @@ export default class Course extends Component {
         return (
             <div key={course.id} className={isDisabled ? "block" : "block drags"}>
                 <h4>{course.name}</h4>
-                <span>14 creditsss</span>
+                <span>14 credit(s)</span>
                 <p>Hello World</p>
             </div>
         );
