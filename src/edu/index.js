@@ -168,7 +168,7 @@ class Edu extends Component {
     }
 
     onDrop(dropInfo) {
-        console.log("DropInfo ", dropInfo);
+        console.log("DropInfo => ", dropInfo);
     }
 
     render() {
